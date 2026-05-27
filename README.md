@@ -1,393 +1,861 @@
-# Proyecto de Conciertos
+# Proyecto de Gestion de Conciertos
 
-Aplicacion web para gestionar conciertos y asistentes. El proyecto esta dividido en un backend REST con Spring Boot, una base de datos H2 en memoria y un frontend Angular que consume la API para listar conciertos, crear nuevos conciertos, ver detalles y registrar asistentes.
+ 
 
-## Estructura del repositorio
+Aplicacion web para gestionar conciertos y asistentes. El proyecto esta formado por un backend desarrollado con Spring Boot, una base de datos H2 en memoria y un frontend desarrollado con Angular.
+
+ 
+
+Desde la aplicacion se pueden consultar conciertos, crear nuevos conciertos, ver informacion detallada y registrar asistentes asociados a cada concierto.
+
+ 
+
+## Funcionalidades y reparto del proyecto
+
+ 
+
+El proyecto se ha dividido por areas de trabajo:
+
+ 
+
+| Area | Responsable | Funcionalidades realizadas |
+
+| --- | --- | --- |
+
+| Frontend | Daniel Montes Cardenas | Desarrollo de la interfaz web con Angular, creacion de vistas, formularios, navegacion entre paginas y conexion visual con los datos de conciertos y asistentes. |
+
+| Backend | Jesus Barru Petrule | Desarrollo de la API REST con Spring Boot, creacion de controladores, servicios, validaciones y endpoints para gestionar conciertos y asistentes. |
+
+| Base de datos | Daniel Alexander Salinas Alvear | Configuracion de H2, definicion de entidades JPA, repositorios y estructura de persistencia de conciertos y asistentes. |
+
+| Integracion proyectos | Javier Penades Sempere | Integracion entre frontend y backend, conexion con la API, ajustes de CORS, comprobacion del flujo completo y coordinacion del funcionamiento conjunto. |
+
+ 
+
+## Estructura del proyecto
+
+ 
 
 ```text
+
 Insert-Coin-Test/
+
 |-- backend/
-|   |-- concert-backend/
-|   |   |-- src/main/java/com/insertcoin/concertapi/
-|   |   |   |-- config/          # Configuracion CORS
-|   |   |   |-- controller/      # Endpoints REST
-|   |   |   |-- dto/             # Objetos de entrada
-|   |   |   |-- exception/       # Manejo de errores
-|   |   |   |-- model/           # Entidades JPA
-|   |   |   |-- repository/      # Repositorios Spring Data
-|   |   |   `-- service/         # Logica de negocio
-|   |   |-- src/main/resources/
-|   |   |   `-- application.properties
-|   |   |-- pom.xml
-|   |   |-- mvnw
-|   |   `-- mvnw.cmd
-|   `-- agente-back/
+
+|   |-- concert-backend/
+
+|   |   |-- src/main/java/com/insertcoin/concertapi/
+
+|   |   |   |-- config/          # Configuracion de CORS
+
+|   |   |   |-- controller/      # Controladores REST
+
+|   |   |   |-- dto/             # Objetos de entrada
+
+|   |   |   |-- exception/       # Gestion de errores
+
+|   |   |   |-- model/           # Entidades JPA
+
+|   |   |   |-- repository/      # Repositorios de base de datos
+
+|   |   |   `-- service/         # Logica de negocio
+
+|   |   |-- src/main/resources/
+
+|   |   |   `-- application.properties
+
+|   |   |-- pom.xml
+
+|   |   |-- mvnw
+
+|   |   `-- mvnw.cmd
+
+|   `-- agente-back/
+
 |-- frontend/
-|   |-- Insert_Coin_Test/
-|   |   |-- src/app/
-|   |   |   |-- services/        # Servicio HTTP hacia el backend
-|   |   |   |-- registro-concierto/
-|   |   |   |-- formulario-registro/
-|   |   |   |-- informacion-concierto/
-|   |   |   `-- imagenes/
-|   |   |-- angular.json
-|   |   |-- package.json
-|   |   `-- package-lock.json
-|   `-- agente-front/
+
+|   |-- Insert_Coin_Test/
+
+|   |   |-- src/app/
+
+|   |   |   |-- services/        # Servicio de conexion con el backend
+
+|   |   |   |-- registro-concierto/
+
+|   |   |   |-- formulario-registro/
+
+|   |   |   |-- informacion-concierto/
+
+|   |   |   `-- imagenes/
+
+|   |   |-- angular.json
+
+|   |   |-- package.json
+
+|   |   `-- package-lock.json
+
+|   `-- agente-front/
+
 `-- README.md
+
 ```
+
+ 
 
 ## Requisitos previos
 
-Antes de arrancar el proyecto, comprueba que tienes instalado:
+ 
+
+Para ejecutar el proyecto completo es necesario tener instalado:
+
+ 
 
 - Java 17 o superior.
-- Maven, o bien usar el wrapper incluido en el backend: `mvnw.cmd` en Windows o `./mvnw` en Linux/macOS.
+
+- Maven, o usar el wrapper incluido en el backend.
+
 - Node.js.
-- npm, normalmente incluido con Node.js.
+
+- npm.
+
 - Angular CLI.
 
-Comandos utiles para comprobar versiones:
+ 
+
+Puedes comprobar las versiones con:
+
+ 
 
 ```bash
+
 java -version
+
 mvn -version
+
 node -v
+
 npm -v
+
 ng version
+
 ```
 
-Si no tienes Angular CLI instalado globalmente:
+ 
+
+Si Angular CLI no esta instalado, se puede instalar con:
+
+ 
 
 ```bash
+
 npm install -g @angular/cli
+
 ```
 
-## Arrancar el backend
+ 
 
-Abre una terminal en la raiz del repositorio y entra en la carpeta del backend:
+## Instrucciones de arranque paso a paso
+
+ 
+
+Para ejecutar correctamente el proyecto completo hay que arrancar primero el backend y despues el frontend.
+
+ 
+
+### 1. Arrancar el backend
+
+ 
+
+Abre una terminal en la raiz del proyecto y entra en la carpeta del backend:
+
+ 
 
 ```bash
+
 cd backend/concert-backend
+
 ```
+
+ 
 
 En Windows PowerShell, ejecuta:
 
+ 
+
 ```bash
+
 .\mvnw.cmd spring-boot:run
+
 ```
+
+ 
 
 En Linux/macOS, ejecuta:
 
+ 
+
 ```bash
+
 ./mvnw spring-boot:run
+
 ```
 
-Si prefieres usar Maven instalado en tu sistema:
+ 
+
+Tambien se puede arrancar con Maven instalado globalmente:
+
+ 
 
 ```bash
+
 mvn spring-boot:run
+
 ```
 
-Cuando arranque correctamente, el backend quedara disponible en:
+ 
+
+Cuando el backend arranque correctamente, estara disponible en:
+
+ 
 
 ```text
+
 http://localhost:8080
+
 ```
 
-La API REST usa el prefijo:
+ 
+
+La API REST se encuentra bajo la siguiente URL base:
+
+ 
 
 ```text
+
 http://localhost:8080/api
+
 ```
+
+ 
 
 Endpoints principales:
 
+ 
+
 ```text
-GET  /api/concerts
-GET  /api/concerts/{id}
+
+GET  /api/concerts
+
+GET  /api/concerts/{id}
+
 POST /api/concerts
-GET  /api/concerts/{id}/attendees
+
+GET  /api/concerts/{id}/attendees
+
 POST /api/attendees
+
 ```
 
-## Comprobar H2
+ 
 
-El proyecto usa H2 en memoria. La consola esta habilitada en:
+### 2. Arrancar el frontend
 
-```text
-http://localhost:8080/h2-console
-```
+ 
 
-Datos de conexion:
+Abre una segunda terminal en la raiz del proyecto y entra en la carpeta del frontend:
 
-```text
-JDBC URL: jdbc:h2:mem:concertdb
-User: sa
-Password: dejar vacio
-```
-
-Importante: al ser una base de datos en memoria, los datos se reinician cuando se para el backend.
-
-## Arrancar el frontend
-
-Abre otra terminal en la raiz del repositorio y entra en la carpeta del frontend:
+ 
 
 ```bash
+
 cd frontend/Insert_Coin_Test
+
 ```
+
+ 
 
 Instala las dependencias:
 
+ 
+
 ```bash
+
 npm install
+
 ```
 
-Arranca Angular:
+ 
+
+Arranca la aplicacion Angular:
+
+ 
 
 ```bash
+
 npm start
+
 ```
 
-Tambien puedes usar directamente:
+ 
+
+Tambien se puede usar:
+
+ 
 
 ```bash
+
 ng serve
+
 ```
 
-Cuando arranque correctamente, el frontend quedara disponible en:
+ 
+
+Cuando el frontend arranque correctamente, estara disponible en:
+
+ 
 
 ```text
+
 http://localhost:4200
+
 ```
 
-## Probar la aplicacion
+ 
 
-1. Asegurate de tener el backend arrancado en `http://localhost:8080`.
-2. Asegurate de tener el frontend arrancado en `http://localhost:4200`.
-3. Abre el navegador en:
+## Como comprobar que todo funciona
+
+ 
+
+1. Comprueba que el backend esta arrancado entrando en:
+
+ 
 
 ```text
+
+http://localhost:8080/api/concerts
+
+```
+
+ 
+
+Si devuelve una respuesta JSON, el backend esta funcionando.
+
+ 
+
+2. Comprueba que el frontend esta arrancado entrando en:
+
+ 
+
+```text
+
 http://localhost:4200
+
 ```
 
-4. Entra en el listado de conciertos. La ruta principal redirige a:
+ 
+
+3. Desde la aplicacion web, entra en el listado de conciertos:
+
+ 
 
 ```text
+
 http://localhost:4200/conciertos
+
 ```
 
-5. Comprueba que se muestran los conciertos existentes.
-6. Crea un concierto desde el formulario correspondiente.
-7. Abre el detalle de un concierto.
-8. Crea asistentes asociados a un concierto.
-9. Vuelve al listado o al detalle para comprobar que los datos se actualizan.
+ 
+
+4. Verifica que se muestran los conciertos existentes.
+
+ 
+
+5. Crea un nuevo concierto desde el formulario correspondiente.
+
+ 
+
+6. Entra en el detalle de un concierto.
+
+ 
+
+7. Registra asistentes asociados a un concierto.
+
+ 
+
+8. Vuelve al listado o al detalle del concierto y comprueba que los datos se han actualizado.
+
+ 
 
 Rutas principales del frontend:
 
-```text
-/conciertos       # Listado de conciertos
-/registro         # Formulario de registro
-/concierto/:id    # Informacion de un concierto
-/imagenes         # Vista de imagenes
-```
-
-## Configuracion importante
-
-### URL del backend
-
-El frontend consume la API desde:
+ 
 
 ```text
-http://localhost:8080/api
+
+/conciertos       # Listado de conciertos
+
+/registro         # Formulario de registro
+
+/concierto/:id    # Informacion de un concierto
+
+/imagenes         # Vista de imagenes
+
 ```
 
-Esta URL esta definida en:
+ 
+
+## Configuracion de H2
+
+ 
+
+El proyecto usa H2 como base de datos en memoria. Esto significa que los datos existen mientras el backend esta arrancado, pero se pierden al detener la aplicacion.
+
+ 
+
+La consola de H2 esta disponible en:
+
+ 
 
 ```text
-frontend/Insert_Coin_Test/src/app/services/concierto.service.ts
+
+http://localhost:8080/h2-console
+
 ```
 
-Constante:
+ 
 
-```ts
-const API_BASE_URL = 'http://localhost:8080/api';
-```
+Para entrar correctamente, usa estos valores:
 
-Si cambias el puerto del backend o despliegas la API en otra URL, actualiza ese valor.
-
-### Puerto del backend
-
-El backend arranca en el puerto `8080`. Esta configurado en:
+ 
 
 ```text
+
+JDBC URL: jdbc:h2:mem:concertdb
+
+User Name: sa
+
+Password: dejar vacio
+
+```
+
+ 
+
+Es importante modificar la URL JDBC que aparece por defecto en la pantalla de H2 y dejarla exactamente asi:
+
+ 
+
+```text
+
+jdbc:h2:mem:concertdb
+
+```
+
+ 
+
+El usuario y la contrasena deben dejarse por defecto:
+
+ 
+
+```text
+
+Usuario: sa
+
+Contrasena: vacia
+
+```
+
+ 
+
+La configuracion de H2 se encuentra en:
+
+ 
+
+```text
+
 backend/concert-backend/src/main/resources/application.properties
+
 ```
 
-Propiedad:
-
-```properties
-server.port=8080
-```
-
-### Puerto del frontend
-
-Angular arranca por defecto en el puerto `4200`:
-
-```text
-http://localhost:4200
-```
-
-Si necesitas usar otro puerto:
-
-```bash
-ng serve --port 4300
-```
-
-Si haces esto, tambien tendras que actualizar la configuracion CORS del backend.
-
-### CORS
-
-El backend permite peticiones desde:
-
-```text
-http://localhost:4200
-```
-
-La configuracion esta en:
-
-```text
-backend/concert-backend/src/main/java/com/insertcoin/concertapi/config/WebConfig.java
-```
+ 
 
 Configuracion actual:
 
+ 
+
+```properties
+
+spring.datasource.url=jdbc:h2:mem:concertdb
+
+spring.datasource.driver-class-name=org.h2.Driver
+
+spring.datasource.username=sa
+
+spring.datasource.password=
+
+spring.h2.console.enabled=true
+
+spring.h2.console.path=/h2-console
+
+```
+
+ 
+
+## Configuracion importante
+
+ 
+
+### URL del backend
+
+ 
+
+El frontend consume la API desde:
+
+ 
+
+```text
+
+http://localhost:8080/api
+
+```
+
+ 
+
+Esta URL esta definida en:
+
+ 
+
+```text
+
+frontend/Insert_Coin_Test/src/app/services/concierto.service.ts
+
+```
+
+ 
+
+Constante utilizada:
+
+ 
+
+```ts
+
+const API_BASE_URL = 'http://localhost:8080/api';
+
+```
+
+ 
+
+### Puerto del backend
+
+ 
+
+El backend se ejecuta en el puerto `8080`.
+
+ 
+
+Esta configurado en:
+
+ 
+
+```text
+
+backend/concert-backend/src/main/resources/application.properties
+
+```
+
+ 
+
+```properties
+
+server.port=8080
+
+```
+
+ 
+
+### Puerto del frontend
+
+ 
+
+El frontend se ejecuta por defecto en el puerto `4200`.
+
+ 
+
+URL:
+
+ 
+
+```text
+
+http://localhost:4200
+
+```
+
+ 
+
+### CORS
+
+ 
+
+El backend permite peticiones desde el frontend local:
+
+ 
+
+```text
+
+http://localhost:4200
+
+```
+
+ 
+
+Esta configuracion se encuentra en:
+
+ 
+
+```text
+
+backend/concert-backend/src/main/java/com/insertcoin/concertapi/config/WebConfig.java
+
+```
+
+ 
+
+Configuracion actual:
+
+ 
+
 ```java
+
 registry.addMapping("/api/**")
-        .allowedOrigins("http://localhost:4200")
-        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-        .allowedHeaders("*");
+
+        .allowedOrigins("http://localhost:4200")
+
+        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+
+        .allowedHeaders("*");
+
 ```
 
-Si el frontend se ejecuta en otro puerto, por ejemplo `4300`, cambia `allowedOrigins` a:
+ 
 
-```java
-.allowedOrigins("http://localhost:4300")
+Si se cambia el puerto del frontend, tambien hay que actualizar esta configuracion.
+
+ 
+
+## Problemas encontrados durante el desarrollo
+
+ 
+
+Durante el desarrollo del proyecto se encontraron algunos problemas que se fueron resolviendo:
+
+ 
+
+1. En la aplicacion web se quedaban algunos espacios en blanco. Al realizar la integracion con el backend y cargar los datos reales desde la API, este problema quedo solucionado.
+
+ 
+
+2. Hubo problemas con los mensajes de error de los formularios. Fue necesario revisar la validacion y la forma en la que se mostraban los mensajes para que el usuario pudiera entender correctamente que campos debia corregir.
+
+ 
+
+3. Al entrar en la base de datos H2, la URL JDBC que aparece por defecto no siempre coincide con la base de datos del proyecto. Para conectarse correctamente, hay que cambiarla a:
+
+ 
+
+```text
+
+jdbc:h2:mem:concertdb
+
 ```
+
+ 
+
+4. El usuario y la contrasena de H2 deben dejarse por defecto. El usuario es `sa` y la contrasena debe quedar vacia.
+
+ 
 
 ## Problemas frecuentes y solucion
 
-### El frontend no carga datos
+ 
 
-Comprueba que el backend esta arrancado:
+### El frontend no muestra conciertos
+
+ 
+
+Comprueba primero que el backend esta arrancado:
+
+ 
 
 ```text
+
 http://localhost:8080/api/concerts
+
 ```
 
-Si esa URL no responde, arranca el backend con Maven.
+ 
+
+Si esa URL no responde, hay que arrancar el backend.
+
+ 
 
 ### Error de CORS en el navegador
 
-Suele ocurrir cuando el frontend no esta en `http://localhost:4200` o cuando el backend no tiene permitido el origen correcto.
+ 
+
+Este error puede aparecer si el frontend no se esta ejecutando en `http://localhost:4200` o si el backend no tiene permitido ese origen.
+
+ 
 
 Solucion:
 
-- Comprueba el puerto real del frontend.
-- Revisa `WebConfig.java`.
-- Reinicia el backend despues de cambiar CORS.
+ 
 
-### El puerto 8080 ya esta ocupado
+- Revisar el puerto real del frontend.
 
-Cambia el puerto del backend en `application.properties`:
+- Revisar el archivo `WebConfig.java`.
 
-```properties
-server.port=8081
-```
+- Reiniciar el backend despues de cambiar la configuracion.
 
-Despues actualiza tambien la URL del backend en `concierto.service.ts`:
+ 
 
-```ts
-const API_BASE_URL = 'http://localhost:8081/api';
-```
+### El puerto 8080 esta ocupado
 
-### El puerto 4200 ya esta ocupado
+ 
 
-Arranca Angular en otro puerto:
+Puedes cambiar el puerto del backend en:
 
-```bash
-ng serve --port 4300
-```
-
-Despues actualiza CORS en el backend para permitir `http://localhost:4300`.
-
-### No puedo entrar en H2
-
-Comprueba estos valores:
+ 
 
 ```text
-URL: http://localhost:8080/h2-console
-JDBC URL: jdbc:h2:mem:concertdb
-User: sa
-Password: vacio
+
+backend/concert-backend/src/main/resources/application.properties
+
 ```
 
-Tambien verifica que el backend sigue arrancado. Si paras el backend, la base de datos H2 desaparece porque esta en memoria.
+ 
+
+Ejemplo:
+
+ 
+
+```properties
+
+server.port=8081
+
+```
+
+ 
+
+Si cambias el puerto, tambien debes cambiar la URL del backend en el servicio Angular:
+
+ 
+
+```ts
+
+const API_BASE_URL = 'http://localhost:8081/api';
+
+```
+
+ 
+
+### El puerto 4200 esta ocupado
+
+ 
+
+Puedes arrancar Angular en otro puerto:
+
+ 
+
+```bash
+
+ng serve --port 4300
+
+```
+
+ 
+
+Si haces esto, tambien debes modificar CORS en el backend para permitir el nuevo origen:
+
+ 
+
+```text
+
+http://localhost:4300
+
+```
+
+ 
 
 ### `ng` no se reconoce como comando
 
-Instala Angular CLI globalmente:
+ 
+
+Instala Angular CLI:
+
+ 
 
 ```bash
+
 npm install -g @angular/cli
+
 ```
 
-O usa el script del proyecto:
+ 
+
+O ejecuta la aplicacion con el script del proyecto:
+
+ 
 
 ```bash
+
 npm start
+
 ```
 
-### Error con dependencias de Node
-
-Elimina dependencias instaladas y reinstala:
-
-```bash
-rm -rf node_modules
-npm install
-```
-
-En Windows PowerShell:
-
-```powershell
-Remove-Item -Recurse -Force node_modules
-npm install
-```
+ 
 
 ### Error al compilar Java
 
-Comprueba que estas usando Java 17 o superior:
+ 
+
+Comprueba que se esta usando Java 17 o superior:
+
+ 
 
 ```bash
+
 java -version
+
 ```
 
-El backend esta configurado con:
+ 
+
+El proyecto esta configurado para Java 17:
+
+ 
 
 ```xml
+
 <java.version>17</java.version>
+
 ```
+
+ 
 
 ## Notas finales
 
-- Arranca siempre el backend antes de usar el frontend.
-- H2 es una base de datos temporal en memoria; no conserva datos entre reinicios del backend.
-- El frontend y el backend deben mantener puertos compatibles con la configuracion CORS.
-- Para desarrollo local, la configuracion esperada es:
+ 
 
-```text
-Backend:  http://localhost:8080
-API:      http://localhost:8080/api
-H2:       http://localhost:8080/h2-console
-Frontend: http://localhost:4200
-```
+- Primero se arranca el backend y despues el frontend.
+
+- El backend se ejecuta en `http://localhost:8080`.
+
+- El frontend se ejecuta en `http://localhost:4200`.
+
+- La API se consume desde `http://localhost:8080/api`.
+
+- H2 esta disponible en `http://localhost:8080/h2-console`.
+
+- La base de datos H2 es temporal porque esta en memoria.
+
+- Si se cambian los puertos, hay que actualizar la URL del backend en Angular y la configuracion CORS en Spring Boot.
