@@ -1,0 +1,309 @@
+// Variables
+$color-primario: #667eea
+$color-secundario: #764ba2
+$color-fondo: #f8f9fa
+$color-texto: #333
+$color-borde: #ddd
+$color-hover: #f0f0f0
+
+.contenedor-conciertos
+  padding: 3rem 2rem
+  max-width: 1200px
+  margin: 0 auto
+
+.header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  gap: 1.5rem
+  margin-bottom: 3rem
+
+  h1
+    font-size: 2.5rem
+    color: $color-texto
+    margin-bottom: 0.5rem
+    font-weight: 700
+
+  .subtitulo
+    font-size: 1.1rem
+    color: #666
+    margin: 0
+
+.boton-primario
+  background: linear-gradient(135deg, $color-primario 0%, $color-secundario 100%)
+  color: white
+  border: none
+  border-radius: 6px
+  padding: 0.8rem 1.2rem
+  font-weight: 700
+  cursor: pointer
+
+  &:disabled
+    opacity: 0.6
+    cursor: not-allowed
+
+.alerta
+  margin-bottom: 1.5rem
+  padding: 1rem
+  border-radius: 6px
+  font-weight: 600
+
+  &.exito
+    background: #e7f7ec
+    color: #176c35
+    border: 1px solid #9be0b2
+
+  &.error
+    background: #ffecec
+    color: #9a1f1f
+    border: 1px solid #f1aaaa
+    display: flex
+    justify-content: space-between
+    gap: 1rem
+    align-items: center
+
+    button
+      border: none
+      border-radius: 6px
+      padding: 0.5rem 0.8rem
+      cursor: pointer
+
+.formulario-concierto
+  background: white
+  border: 1px solid $color-borde
+  border-radius: 8px
+  padding: 1.5rem
+  margin-bottom: 2rem
+  display: grid
+  grid-template-columns: repeat(2, minmax(0, 1fr))
+  gap: 1rem
+
+.grupo-formulario
+  display: flex
+  flex-direction: column
+  gap: 0.4rem
+
+  label
+    font-weight: 700
+    color: $color-texto
+
+  input
+    border: 2px solid $color-borde
+    border-radius: 6px
+    padding: 0.75rem
+    font-size: 1rem
+
+  span
+    color: #c0392b
+    font-size: 0.85rem
+
+.vacio
+  background: white
+  border-radius: 8px
+  padding: 2rem
+  text-align: center
+  color: #666
+
+// Loading spinner
+.cargando
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  padding: 5rem 2rem
+  min-height: 400px
+
+  .spinner
+    width: 50px
+    height: 50px
+    border: 4px solid $color-fondo
+    border-top: 4px solid $color-primario
+    border-radius: 50%
+    animation: spin 1s linear infinite
+
+  p
+    margin-top: 1.5rem
+    color: $color-primario
+    font-weight: 600
+
+@keyframes spin
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)
+
+// Grid de conciertos
+.grid-conciertos
+  display: grid
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))
+  gap: 2rem
+  margin-bottom: 3rem
+
+// Caja del concierto
+.caja-concierto
+  background: white
+  border-radius: 12px
+  overflow: hidden
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1)
+  cursor: pointer
+  transition: all 0.3s ease
+  border: 2px solid transparent
+  display: flex
+  flex-direction: column
+
+  &:hover
+    transform: translateY(-8px)
+    box-shadow: 0 12px 30px rgba($color-primario, 0.25)
+    border-color: $color-primario
+
+  .imagen-placeholder
+    width: 100%
+    height: 180px
+    background: linear-gradient(135deg, $color-primario 0%, $color-secundario 100%)
+    display: flex
+    justify-content: center
+    align-items: center
+    position: relative
+    overflow: hidden
+
+    &::after
+      content: ''
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      background: rgba(0, 0, 0, 0.1)
+      transition: all 0.3s ease
+
+    .icono-musica
+      font-size: 4rem
+      z-index: 1
+      transition: transform 0.3s ease
+
+  &:hover .icono-musica
+    transform: scale(1.2)
+
+  .contenido
+    padding: 1.5rem
+    display: flex
+    flex-direction: column
+    flex: 1
+
+  .titulo
+    font-size: 1.3rem
+    font-weight: 700
+    color: $color-texto
+    margin: 0 0 1rem 0
+    line-height: 1.4
+
+  .info-artista
+    margin-bottom: 1rem
+    padding-bottom: 1rem
+    border-bottom: 2px solid $color-fondo
+
+    .etiqueta
+      display: block
+      font-size: 0.85rem
+      color: $color-primario
+      font-weight: 600
+      text-transform: uppercase
+      margin-bottom: 0.3rem
+
+    .valor
+      margin: 0
+      color: $color-texto
+      font-weight: 600
+      font-size: 1rem
+
+  .info-fila
+    display: grid
+    grid-template-columns: 1fr 1fr
+    gap: 1rem
+    margin-bottom: 1rem
+
+  .info-bloque
+    .etiqueta
+      display: block
+      font-size: 0.8rem
+      color: $color-primario
+      font-weight: 600
+      margin-bottom: 0.3rem
+
+    .valor
+      margin: 0
+      color: $color-texto
+      font-size: 0.95rem
+      font-weight: 500
+
+  .descripcion
+    color: #666
+    font-size: 0.95rem
+    line-height: 1.5
+    margin: 1rem 0
+    flex: 1
+    display: -webkit-box
+    -webkit-line-clamp: 3
+    -webkit-box-orient: vertical
+    overflow: hidden
+
+  .pie-caja
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding-top: 1rem
+    border-top: 2px solid $color-fondo
+    margin-top: 1rem
+
+    .precio
+      font-size: 1.5rem
+      font-weight: 700
+      color: $color-secundario
+
+    .boton-click
+      background: linear-gradient(135deg, $color-primario 0%, $color-secundario 100%)
+      color: white
+      padding: 0.7rem 1.2rem
+      border-radius: 6px
+      font-weight: 600
+      font-size: 0.9rem
+      transition: all 0.3s ease
+
+  &:hover .boton-click
+    transform: translateX(5px)
+    box-shadow: 0 4px 12px rgba($color-primario, 0.4)
+
+// Responsive
+@media (max-width: 768px)
+  .contenedor-conciertos
+    padding: 2rem 1rem
+
+  .header
+    margin-bottom: 2rem
+    flex-direction: column
+    align-items: stretch
+    text-align: center
+
+    h1
+      font-size: 1.8rem
+
+  .formulario-concierto
+    grid-template-columns: 1fr
+
+  .grid-conciertos
+    grid-template-columns: 1fr
+    gap: 1.5rem
+
+  .caja-concierto
+    .imagen-placeholder
+      height: 150px
+
+      .icono-musica
+        font-size: 3rem
+
+    .contenido
+      padding: 1rem
+
+    .info-fila
+      grid-template-columns: 1fr
+      gap: 0.5rem

@@ -1,0 +1,110 @@
+<div class="contenedor-formulario">
+  <div class="tarjeta-registro">
+    <h1>Registrar asistente</h1>
+    <p class="subtitulo">Crea una compra asociada a un concierto real del backend</p>
+
+    @if (cargando()) {
+      <div class="alerta">Cargando conciertos...</div>
+    }
+
+    @if (error()) {
+      <div class="alerta alerta-error">
+        {{ error() }}
+      </div>
+    }
+
+    @if (registroExitoso()) {
+      <div class="alerta alerta-exito">
+        Asistente registrado correctamente.
+      </div>
+    }
+
+    <form [formGroup]="formulario" (ngSubmit)="enviarFormulario()" class="formulario">
+      <div class="grupo-formulario">
+        <label for="firstName">Nombre *</label>
+        <input
+          id="firstName"
+          type="text"
+          formControlName="firstName"
+          placeholder="Ej: Lucia"
+          class="input-campo"
+          [ngClass]="{ 'input-error': tieneError('firstName') }">
+        @if (tieneError('firstName')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('firstName') }}</span>
+        }
+      </div>
+
+      <div class="grupo-formulario">
+        <label for="lastName">Apellidos *</label>
+        <input
+          id="lastName"
+          type="text"
+          formControlName="lastName"
+          placeholder="Ej: Martinez"
+          class="input-campo"
+          [ngClass]="{ 'input-error': tieneError('lastName') }">
+        @if (tieneError('lastName')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('lastName') }}</span>
+        }
+      </div>
+
+      <div class="grupo-formulario">
+        <label for="email">Email *</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="lucia@example.com"
+          class="input-campo"
+          [ngClass]="{ 'input-error': tieneError('email') }">
+        @if (tieneError('email')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('email') }}</span>
+        }
+      </div>
+
+      <div class="grupo-formulario">
+        <label for="ticketsPurchased">Entradas *</label>
+        <input
+          id="ticketsPurchased"
+          type="number"
+          min="1"
+          formControlName="ticketsPurchased"
+          class="input-campo"
+          [ngClass]="{ 'input-error': tieneError('ticketsPurchased') }">
+        @if (tieneError('ticketsPurchased')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('ticketsPurchased') }}</span>
+        }
+      </div>
+
+      <div class="grupo-formulario">
+        <label for="concertId">Concierto *</label>
+        <select
+          id="concertId"
+          formControlName="concertId"
+          class="select-campo"
+          [ngClass]="{ 'input-error': tieneError('concertId') }">
+          <option [ngValue]="null">Selecciona un concierto</option>
+          @for (concierto of conciertos(); track concierto.id) {
+            <option [ngValue]="concierto.id">{{ concierto.name }} - {{ concierto.artist }}</option>
+          }
+        </select>
+        @if (tieneError('concertId')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('concertId') }}</span>
+        }
+      </div>
+
+      <div class="grupo-botones">
+        <button type="submit" class="boton boton-enviar" [disabled]="guardando() || cargando()">
+          {{ guardando() ? 'Guardando...' : 'Crear asistente' }}
+        </button>
+        <button type="button" class="boton boton-limpiar" (click)="limpiarFormulario()">
+          Limpiar
+        </button>
+      </div>
+
+      <button type="button" class="boton boton-detalle" (click)="verDetalle()">
+        Ver concierto seleccionado
+      </button>
+    </form>
+  </div>
+</div>
