@@ -4,9 +4,11 @@
     <p class="subtitulo">Completa tus datos para reservar tu entrada</p>
 
     <!-- Mensaje de éxito -->
-    <div *ngIf="registroExitoso()" class="alerta alerta-exito">
-      ✓ ¡Registro completado exitosamente! Tu entrada ha sido reservada.
-    </div>
+    @if (registroExitoso()) {
+      <div class="alerta alerta-exito">
+        ✓ ¡Registro completado exitosamente! Tu entrada ha sido reservada.
+      </div>
+    }
 
     <form [formGroup]="formulario" (ngSubmit)="enviarFormulario()" class="formulario">
 
@@ -20,8 +22,10 @@
           placeholder="Ej: Juan"
           class="input-campo"
           [ngClass]="{ 'input-error': tieneError('nombre') }"
-        />
-        <span *ngIf="tieneError('nombre')" class="mensaje-error">{{ obtenerMensajeError('nombre') }}</span>
+          />
+        @if (tieneError('nombre')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('nombre') }}</span>
+        }
       </div>
 
       <!-- Campo Apellidos -->
@@ -34,8 +38,10 @@
           placeholder="Ej: García López"
           class="input-campo"
           [ngClass]="{ 'input-error': tieneError('apellidos') }"
-        />
-        <span *ngIf="tieneError('apellidos')" class="mensaje-error">{{ obtenerMensajeError('apellidos') }}</span>
+          />
+        @if (tieneError('apellidos')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('apellidos') }}</span>
+        }
       </div>
 
       <!-- Campo Edad -->
@@ -50,8 +56,10 @@
           [ngClass]="{ 'input-error': tieneError('edad') }"
           min="13"
           max="120"
-        />
-        <span *ngIf="tieneError('edad')" class="mensaje-error">{{ obtenerMensajeError('edad') }}</span>
+          />
+        @if (tieneError('edad')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('edad') }}</span>
+        }
       </div>
 
       <!-- Campo DNI -->
@@ -65,8 +73,10 @@
           class="input-campo"
           [ngClass]="{ 'input-error': tieneError('dni') }"
           maxlength="9"
-        />
-        <span *ngIf="tieneError('dni')" class="mensaje-error">{{ obtenerMensajeError('dni') }}</span>
+          />
+        @if (tieneError('dni')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('dni') }}</span>
+        }
       </div>
 
       <!-- Campo Concierto (Desplegable) -->
@@ -77,11 +87,15 @@
           formControlName="concierto"
           class="select-campo"
           [ngClass]="{ 'input-error': tieneError('concierto') }"
-        >
+          >
           <option value="">-- Selecciona un concierto --</option>
-          <option *ngFor="let concierto of conciertos" [value]="concierto.id">{{ concierto.nombre }}</option>
+          @for (concierto of conciertos; track concierto) {
+            <option [value]="concierto.id">{{ concierto.nombre }}</option>
+          }
         </select>
-        <span *ngIf="tieneError('concierto')" class="mensaje-error">{{ obtenerMensajeError('concierto') }}</span>
+        @if (tieneError('concierto')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('concierto') }}</span>
+        }
       </div>
 
       <!-- Botones de acción -->
@@ -90,14 +104,14 @@
           type="submit"
           class="boton boton-enviar"
           [disabled]="formulario.invalid && enviado()"
-        >
+          >
           Enviar Registro
         </button>
         <button
           type="button"
           class="boton boton-limpiar"
           (click)="limpiarFormulario()"
-        >
+          >
           Limpiar Formulario
         </button>
       </div>
@@ -105,15 +119,17 @@
     </form>
 
     <!-- Resumen de datos (solo si se validó correctamente) -->
-    <div *ngIf="enviado() && formulario.valid && !registroExitoso()" class="resumen-datos">
-      <h3>Resumen de tu registro:</h3>
-      <ul>
-        <li><strong>Nombre:</strong> {{ formulario.get('nombre')?.value }}</li>
-        <li><strong>Apellidos:</strong> {{ formulario.get('apellidos')?.value }}</li>
-        <li><strong>Edad:</strong> {{ formulario.get('edad')?.value }} años</li>
-        <li><strong>DNI:</strong> {{ formulario.get('dni')?.value }}</li>
-        <li><strong>Concierto:</strong> {{ formulario.get('concierto')?.value }}</li>
-      </ul>
-    </div>
+    @if (enviado() && formulario.valid && !registroExitoso()) {
+      <div class="resumen-datos">
+        <h3>Resumen de tu registro:</h3>
+        <ul>
+          <li><strong>Nombre:</strong> {{ formulario.get('nombre')?.value }}</li>
+          <li><strong>Apellidos:</strong> {{ formulario.get('apellidos')?.value }}</li>
+          <li><strong>Edad:</strong> {{ formulario.get('edad')?.value }} años</li>
+          <li><strong>DNI:</strong> {{ formulario.get('dni')?.value }}</li>
+          <li><strong>Concierto:</strong> {{ formulario.get('concierto')?.value }}</li>
+        </ul>
+      </div>
+    }
   </div>
 </div>
