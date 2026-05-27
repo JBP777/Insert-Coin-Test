@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { ConciertoService, Concierto } from '../services/concierto.service';
 
 @Component({
-  selector: 'app-registro-concierto',
-  templateUrl: './registro-concierto.component.html',
-  styleUrls: ['./registro-concierto.component.sass']
+    selector: 'app-registro-concierto',
+    templateUrl: './registro-concierto.component.html',
+    styleUrls: ['./registro-concierto.component.sass'],
+    standalone: false
 })
 export class RegistroConciertoComponent implements OnInit {
 

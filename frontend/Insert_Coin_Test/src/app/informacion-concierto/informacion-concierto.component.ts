@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConciertoService, Concierto } from '../services/concierto.service';
 
 @Component({
-  selector: 'app-informacion-concierto',
-  templateUrl: './informacion-concierto.component.html',
-  styleUrls: ['./informacion-concierto.component.sass']
+    selector: 'app-informacion-concierto',
+    templateUrl: './informacion-concierto.component.html',
+    styleUrls: ['./informacion-concierto.component.sass'],
+    standalone: false
 })
 export class InformacionConciertoComponent implements OnInit {
 

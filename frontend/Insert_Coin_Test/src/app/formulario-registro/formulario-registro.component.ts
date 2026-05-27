@@ -8,9 +8,10 @@ interface Concierto {
 }
 
 @Component({
-  selector: 'app-formulario-registro',
-  templateUrl: './formulario-registro.component.html',
-  styleUrls: ['./formulario-registro.component.sass']
+    selector: 'app-formulario-registro',
+    templateUrl: './formulario-registro.component.html',
+    styleUrls: ['./formulario-registro.component.sass'],
+    standalone: false
 })
 export class FormularioRegistroComponent implements OnInit {
 
