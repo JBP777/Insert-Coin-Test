@@ -1,135 +1,110 @@
 <div class="contenedor-formulario">
   <div class="tarjeta-registro">
-    <h1>Formulario de Registro de Comprador</h1>
-    <p class="subtitulo">Completa tus datos para reservar tu entrada</p>
+    <h1>Registrar asistente</h1>
+    <p class="subtitulo">Crea una compra asociada a un concierto real del backend</p>
 
-    <!-- Mensaje de éxito -->
+    @if (cargando()) {
+      <div class="alerta">Cargando conciertos...</div>
+    }
+
+    @if (error()) {
+      <div class="alerta alerta-error">
+        {{ error() }}
+      </div>
+    }
+
     @if (registroExitoso()) {
       <div class="alerta alerta-exito">
-        ✓ ¡Registro completado exitosamente! Tu entrada ha sido reservada.
+        Asistente registrado correctamente.
       </div>
     }
 
     <form [formGroup]="formulario" (ngSubmit)="enviarFormulario()" class="formulario">
-
-      <!-- Campo Nombre -->
       <div class="grupo-formulario">
-        <label for="nombre">Nombre *</label>
+        <label for="firstName">Nombre *</label>
         <input
-          id="nombre"
+          id="firstName"
           type="text"
-          formControlName="nombre"
-          placeholder="Ej: Juan"
+          formControlName="firstName"
+          placeholder="Ej: Lucia"
           class="input-campo"
-          [ngClass]="{ 'input-error': tieneError('nombre') }"
-          />
-        @if (tieneError('nombre')) {
-          <span class="mensaje-error">{{ obtenerMensajeError('nombre') }}</span>
+          [ngClass]="{ 'input-error': tieneError('firstName') }">
+        @if (tieneError('firstName')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('firstName') }}</span>
         }
       </div>
 
-      <!-- Campo Apellidos -->
       <div class="grupo-formulario">
-        <label for="apellidos">Apellidos *</label>
+        <label for="lastName">Apellidos *</label>
         <input
-          id="apellidos"
+          id="lastName"
           type="text"
-          formControlName="apellidos"
-          placeholder="Ej: García López"
+          formControlName="lastName"
+          placeholder="Ej: Martinez"
           class="input-campo"
-          [ngClass]="{ 'input-error': tieneError('apellidos') }"
-          />
-        @if (tieneError('apellidos')) {
-          <span class="mensaje-error">{{ obtenerMensajeError('apellidos') }}</span>
+          [ngClass]="{ 'input-error': tieneError('lastName') }">
+        @if (tieneError('lastName')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('lastName') }}</span>
         }
       </div>
 
-      <!-- Campo Edad -->
       <div class="grupo-formulario">
-        <label for="edad">Edad *</label>
+        <label for="email">Email *</label>
         <input
-          id="edad"
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="lucia@example.com"
+          class="input-campo"
+          [ngClass]="{ 'input-error': tieneError('email') }">
+        @if (tieneError('email')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('email') }}</span>
+        }
+      </div>
+
+      <div class="grupo-formulario">
+        <label for="ticketsPurchased">Entradas *</label>
+        <input
+          id="ticketsPurchased"
           type="number"
-          formControlName="edad"
-          placeholder="Ej: 25"
+          min="1"
+          formControlName="ticketsPurchased"
           class="input-campo"
-          [ngClass]="{ 'input-error': tieneError('edad') }"
-          min="13"
-          max="120"
-          />
-        @if (tieneError('edad')) {
-          <span class="mensaje-error">{{ obtenerMensajeError('edad') }}</span>
+          [ngClass]="{ 'input-error': tieneError('ticketsPurchased') }">
+        @if (tieneError('ticketsPurchased')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('ticketsPurchased') }}</span>
         }
       </div>
 
-      <!-- Campo DNI -->
       <div class="grupo-formulario">
-        <label for="dni">DNI *</label>
-        <input
-          id="dni"
-          type="text"
-          formControlName="dni"
-          placeholder="Ej: 12345678A"
-          class="input-campo"
-          [ngClass]="{ 'input-error': tieneError('dni') }"
-          maxlength="9"
-          />
-        @if (tieneError('dni')) {
-          <span class="mensaje-error">{{ obtenerMensajeError('dni') }}</span>
-        }
-      </div>
-
-      <!-- Campo Concierto (Desplegable) -->
-      <div class="grupo-formulario">
-        <label for="concierto">Selecciona un Concierto *</label>
+        <label for="concertId">Concierto *</label>
         <select
-          id="concierto"
-          formControlName="concierto"
+          id="concertId"
+          formControlName="concertId"
           class="select-campo"
-          [ngClass]="{ 'input-error': tieneError('concierto') }"
-          >
-          <option value="">-- Selecciona un concierto --</option>
-          @for (concierto of conciertos; track concierto) {
-            <option [value]="concierto.id">{{ concierto.nombre }}</option>
+          [ngClass]="{ 'input-error': tieneError('concertId') }">
+          <option [ngValue]="null">Selecciona un concierto</option>
+          @for (concierto of conciertos(); track concierto.id) {
+            <option [ngValue]="concierto.id">{{ concierto.name }} - {{ concierto.artist }}</option>
           }
         </select>
-        @if (tieneError('concierto')) {
-          <span class="mensaje-error">{{ obtenerMensajeError('concierto') }}</span>
+        @if (tieneError('concertId')) {
+          <span class="mensaje-error">{{ obtenerMensajeError('concertId') }}</span>
         }
       </div>
 
-      <!-- Botones de acción -->
       <div class="grupo-botones">
-        <button
-          type="submit"
-          class="boton boton-enviar"
-          [disabled]="formulario.invalid && enviado()"
-          >
-          Enviar Registro
+        <button type="submit" class="boton boton-enviar" [disabled]="guardando() || cargando()">
+          {{ guardando() ? 'Guardando...' : 'Crear asistente' }}
         </button>
-        <button
-          type="button"
-          class="boton boton-limpiar"
-          (click)="limpiarFormulario()"
-          >
-          Limpiar Formulario
+        <button type="button" class="boton boton-limpiar" (click)="limpiarFormulario()">
+          Limpiar
         </button>
       </div>
 
+      <button type="button" class="boton boton-detalle" (click)="verDetalle()">
+        Ver concierto seleccionado
+      </button>
     </form>
-
-    <!-- Resumen de datos (solo si se validó correctamente) -->
-    @if (enviado() && formulario.valid && !registroExitoso()) {
-      <div class="resumen-datos">
-        <h3>Resumen de tu registro:</h3>
-        <ul>
-          <li><strong>Nombre:</strong> {{ formulario.get('nombre')?.value }}</li>
-          <li><strong>Apellidos:</strong> {{ formulario.get('apellidos')?.value }}</li>
-          <li><strong>Edad:</strong> {{ formulario.get('edad')?.value }} años</li>
-          <li><strong>DNI:</strong> {{ formulario.get('dni')?.value }}</li>
-          <li><strong>Concierto:</strong> {{ formulario.get('concierto')?.value }}</li>
-        </ul>
-      </div>
-    }
   </div>
 </div>

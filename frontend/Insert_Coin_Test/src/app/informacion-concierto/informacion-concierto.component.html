@@ -1,100 +1,82 @@
 <div class="contenedor-detalle">
-  <!-- Botón volver -->
-  <button class="boton-volver" (click)="volverAtras()">← Volver</button>
+  <button class="boton-volver" (click)="volverAtras()">Volver</button>
 
-  <!-- Loading -->
-  @if (cargando) {
+  @if (cargando()) {
     <div class="cargando">
       <div class="spinner"></div>
-      <p>Cargando información del concierto...</p>
+      <p>Cargando informacion del concierto...</p>
     </div>
   }
 
-  <!-- Error -->
-  @if (error && !cargando) {
+  @if (error() && !cargando()) {
     <div class="error">
-      <h2>❌ Error al cargar el concierto</h2>
-      <p>Lo sentimos, no pudimos encontrar la información del concierto.</p>
+      <h2>Error al cargar el concierto</h2>
+      <p>{{ error() }}</p>
       <button class="boton-primario" (click)="volverAtras()">Volver a conciertos</button>
     </div>
   }
 
-  <!-- Detalle del concierto -->
-  @if (concierto && !cargando && !error) {
+  @if (concierto(); as concert) {
     <div class="detalle-concierto">
       <div class="cabecera">
         <div class="imagen-grande">
-          <div class="icono-grande">🎵</div>
+          <div class="icono-grande">♫</div>
         </div>
         <div class="info-principal">
-          <h1>{{ concierto.nombre }}</h1>
-          <p class="artista">Por: {{ concierto.artista }}</p>
-          <p class="genero">{{ concierto.genero }}</p>
+          <h1>{{ concert.name }}</h1>
+          <p class="artista">{{ concert.artist }}</p>
+          <p class="genero">{{ concert.availableTickets }} entradas disponibles</p>
         </div>
       </div>
+
       <div class="contenido-detalle">
-        <!-- Sección 1: Información básica -->
-        <div class="seccion">
-          <h2>📋 Información del Concierto</h2>
+        <section class="seccion">
+          <h2>Informacion del concierto</h2>
           <div class="grid-info">
             <div class="item-info">
-              <span class="etiqueta">📅 Fecha</span>
-              <p class="valor">{{ concierto.fecha }}</p>
+              <span class="etiqueta">Fecha</span>
+              <p class="valor">{{ fechaCorta(concert.concertDate) }}</p>
             </div>
             <div class="item-info">
-              <span class="etiqueta">📍 Lugar</span>
-              <p class="valor">{{ concierto.lugar }}</p>
+              <span class="etiqueta">Lugar</span>
+              <p class="valor">{{ concert.venue }}</p>
             </div>
             <div class="item-info">
-              <span class="etiqueta">⏱️ Duración</span>
-              <p class="valor">{{ concierto.duracion }}</p>
+              <span class="etiqueta">Artista</span>
+              <p class="valor">{{ concert.artist }}</p>
             </div>
             <div class="item-info">
-              <span class="etiqueta">💵 Precio</span>
-              <p class="valor precio">{{ concierto.precio | currency:'EUR':'symbol':'1.2-2' }}</p>
+              <span class="etiqueta">Entradas</span>
+              <p class="valor precio">{{ concert.availableTickets }}</p>
             </div>
           </div>
-        </div>
-        <!-- Sección 2: Descripción -->
-        <div class="seccion">
-          <h2>📝 Descripción</h2>
-          <p class="descripcion">{{ concierto.descripcion }}</p>
-        </div>
-        <!-- Sección 3: Detalles adicionales -->
-        <div class="seccion">
-          <h2>🎸 Detalles</h2>
-          <div class="detalles">
-            <div class="detalle-item">
-              <span class="icono">🎵</span>
-              <div>
-                <h3>Género Musical</h3>
-                <p>{{ concierto.genero }}</p>
-              </div>
+        </section>
+
+        <section class="seccion">
+          <h2>Asistentes registrados</h2>
+          @if (cargandoAsistentes()) {
+            <p class="descripcion">Cargando asistentes...</p>
+          } @else {
+            <div class="detalles">
+              @for (asistente of asistentes(); track asistente.id) {
+                <div class="detalle-item">
+                  <span class="icono">#{{ asistente.id }}</span>
+                  <div>
+                    <h3>{{ asistente.firstName }} {{ asistente.lastName }}</h3>
+                    <p>{{ asistente.email }} · {{ asistente.ticketsPurchased }} entrada(s)</p>
+                  </div>
+                </div>
+              } @empty {
+                <p class="descripcion">Todavia no hay asistentes para este concierto.</p>
+              }
             </div>
-            <div class="detalle-item">
-              <span class="icono">👥</span>
-              <div>
-                <h3>Artista Principal</h3>
-                <p>{{ concierto.artista }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Sección 4: Acciones -->
-        <div class="seccion acciones">
-          <button class="boton-comprar">
-            🎟️ Comprar Entrada - {{ concierto.precio | currency:'EUR':'symbol':'1.2-2' }}
-          </button>
-          <button class="boton-compartir">
-            📤 Compartir
-          </button>
-        </div>
-        <!-- Botón volver en el pie -->
-        <div class="pie-detalle">
-          <button class="boton-volver-completo" (click)="volverAtras()">
-            ← Volver a conciertos
-          </button>
-        </div>
+          }
+        </section>
+
+        <section class="seccion acciones">
+          <button class="boton-comprar" (click)="comprarEntrada()">Registrar asistente</button>
+          <button class="boton-compartir" (click)="volverAtras()">Volver a conciertos</button>
+        </section>
       </div>
     </div>
   }

@@ -1,66 +1,117 @@
 <div class="contenedor-conciertos">
   <div class="header">
-    <h1>Elige tu Concierto</h1>
-    <p class="subtitulo">Selecciona uno de nuestros conciertos disponibles</p>
+    <div>
+      <h1>Conciertos</h1>
+      <p class="subtitulo">Datos cargados desde Spring Boot</p>
+    </div>
+    <button type="button" class="boton-primario" (click)="formularioVisible.set(!formularioVisible())">
+      {{ formularioVisible() ? 'Cerrar formulario' : 'Crear concierto' }}
+    </button>
   </div>
 
-  <!-- Loading -->
-  @if (cargando) {
+  @if (mensaje()) {
+    <div class="alerta exito">{{ mensaje() }}</div>
+  }
+
+  @if (error()) {
+    <div class="alerta error">
+      {{ error() }}
+      <button type="button" (click)="cargarConciertos()">Reintentar</button>
+    </div>
+  }
+
+  @if (formularioVisible()) {
+    <form class="formulario-concierto" [formGroup]="conciertoForm" (ngSubmit)="crearConcierto()">
+      <div class="grupo-formulario">
+        <label for="name">Nombre</label>
+        <input id="name" type="text" formControlName="name" placeholder="Indie Night Live">
+        @if (tieneError('name')) {
+          <span>El nombre es obligatorio.</span>
+        }
+      </div>
+
+      <div class="grupo-formulario">
+        <label for="artist">Artista</label>
+        <input id="artist" type="text" formControlName="artist" placeholder="The Midnight Echoes">
+        @if (tieneError('artist')) {
+          <span>El artista es obligatorio.</span>
+        }
+      </div>
+
+      <div class="grupo-formulario">
+        <label for="venue">Lugar</label>
+        <input id="venue" type="text" formControlName="venue" placeholder="Insert Coin Arena">
+        @if (tieneError('venue')) {
+          <span>El lugar es obligatorio.</span>
+        }
+      </div>
+
+      <div class="grupo-formulario">
+        <label for="concertDate">Fecha</label>
+        <input id="concertDate" type="datetime-local" formControlName="concertDate">
+        @if (tieneError('concertDate')) {
+          <span>La fecha es obligatoria.</span>
+        }
+      </div>
+
+      <div class="grupo-formulario">
+        <label for="availableTickets">Entradas disponibles</label>
+        <input id="availableTickets" type="number" min="1" formControlName="availableTickets">
+        @if (tieneError('availableTickets')) {
+          <span>Debe haber al menos una entrada.</span>
+        }
+      </div>
+
+      <button type="submit" class="boton-primario" [disabled]="guardando()">
+        {{ guardando() ? 'Guardando...' : 'Guardar concierto' }}
+      </button>
+    </form>
+  }
+
+  @if (cargando()) {
     <div class="cargando">
       <div class="spinner"></div>
       <p>Cargando conciertos...</p>
     </div>
   }
 
-  <!-- Grid de conciertos -->
-  @if (!cargando) {
+  @if (!cargando() && !error()) {
     <div class="grid-conciertos">
-      @for (concierto of conciertos; track concierto) {
-        <div
+      @for (concierto of conciertos(); track concierto.id) {
+        <article
           class="caja-concierto"
           (click)="irADetalle(concierto.id)"
           (keydown.enter)="irADetalle(concierto.id)"
           (keydown.space)="irADetalle(concierto.id)"
-          [attr.data-id]="concierto.id"
           role="button"
-          tabindex="0"
-          >
+          tabindex="0">
           <div class="imagen-placeholder">
-            <div class="icono-musica">🎵</div>
+            <div class="icono-musica">♫</div>
           </div>
           <div class="contenido">
-            <h2 class="titulo">{{ concierto.nombre }}</h2>
+            <h2 class="titulo">{{ concierto.name }}</h2>
             <div class="info-artista">
-              <span class="etiqueta">Artista:</span>
-              <p class="valor">{{ concierto.artista }}</p>
+              <span class="etiqueta">Artista</span>
+              <p class="valor">{{ concierto.artist }}</p>
             </div>
             <div class="info-fila">
               <div class="info-bloque">
-                <span class="etiqueta">📅 Fecha</span>
-                <p class="valor">{{ concierto.fecha }}</p>
+                <span class="etiqueta">Fecha</span>
+                <p class="valor">{{ fechaCorta(concierto.concertDate) }}</p>
               </div>
               <div class="info-bloque">
-                <span class="etiqueta">📍 Lugar</span>
-                <p class="valor">{{ concierto.lugar }}</p>
+                <span class="etiqueta">Lugar</span>
+                <p class="valor">{{ concierto.venue }}</p>
               </div>
             </div>
-            <div class="info-fila">
-              <div class="info-bloque">
-                <span class="etiqueta">⏱️ Duración</span>
-                <p class="valor">{{ concierto.duracion }}</p>
-              </div>
-              <div class="info-bloque">
-                <span class="etiqueta">🎸 Género</span>
-                <p class="valor">{{ concierto.genero }}</p>
-              </div>
-            </div>
-            <p class="descripcion">{{ concierto.descripcion }}</p>
             <div class="pie-caja">
-              <span class="precio">{{ concierto.precio | currency:'EUR':'symbol':'1.2-2' }}</span>
-              <span class="boton-click">Ver más →</span>
+              <span class="precio">{{ concierto.availableTickets }} entradas</span>
+              <span class="boton-click">Ver detalle</span>
             </div>
           </div>
-        </div>
+        </article>
+      } @empty {
+        <div class="vacio">Todavia no hay conciertos.</div>
       }
     </div>
   }

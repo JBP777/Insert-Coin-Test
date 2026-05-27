@@ -46,6 +46,11 @@ $color-texto: #333
     color: $color-exito
     border: 1px solid $color-exito
 
+  &.alerta-error
+    background: #ffe6e6
+    color: $color-error
+    border: 1px solid $color-error
+
 .formulario
   display: flex
   flex-direction: column
@@ -124,6 +129,13 @@ $color-texto: #333
     &:hover:not(:disabled)
       background: #d8dfe8
       border-color: $color-primario
+
+.boton-detalle
+  width: 100%
+  background: white
+  color: $color-primario
+  border: 2px solid $color-primario
+  margin-top: 0.25rem
 
 .resumen-datos
   background: $color-fondo

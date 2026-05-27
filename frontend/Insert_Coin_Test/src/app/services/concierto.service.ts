@@ -1,17 +1,41 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
-export interface Concierto {
+const API_BASE_URL = 'http://localhost:8080/api';
+
+export interface Concert {
   id: number;
-  nombre: string;
-  artista: string;
-  fecha: string;
-  lugar: string;
-  descripcion: string;
-  precio: number;
-  imagen: string;
-  duracion: string;
-  genero: string;
+  name: string;
+  artist: string;
+  venue: string;
+  concertDate: string;
+  availableTickets: number;
+  attendees?: Attendee[];
+}
+
+export interface Attendee {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  ticketsPurchased: number;
+}
+
+export interface CreateConcertRequest {
+  name: string;
+  artist: string;
+  venue: string;
+  concertDate: string;
+  availableTickets: number;
+}
+
+export interface CreateAttendeeRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  ticketsPurchased: number;
+  concertId: number;
 }
 
 @Injectable({
@@ -19,60 +43,27 @@ export interface Concierto {
 })
 export class ConciertoService {
 
-  private readonly conciertos: Concierto[] = [
-    {
-      id: 1,
-      nombre: 'Concierto de Verano - Rock',
-      artista: 'The Electric Vibes',
-      fecha: '15 de Junio 2024',
-      lugar: 'Estadio Principal, Madrid',
-      descripcion: 'Un espectáculo de rock en vivo con las mejores canciones de la década. Incluye efectos pirotécnicos y una producción de clase mundial.',
-      precio: 45.99,
-      imagen: 'assets/concierto1.jpg',
-      duracion: '2 horas 30 minutos',
-      genero: 'Rock'
-    },
-    {
-      id: 2,
-      nombre: 'Festival Jazz 2024',
-      artista: 'Miles Jackson Quartet',
-      fecha: '22 de Julio 2024',
-      lugar: 'Auditorio Municipal, Barcelona',
-      descripcion: 'Una noche de jazz elegante con músicos de renombre internacional. Perfecta para los amantes de la música clásica moderna.',
-      precio: 55.99,
-      imagen: 'assets/concierto2.jpg',
-      duracion: '3 horas',
-      genero: 'Jazz'
-    },
-    {
-      id: 3,
-      nombre: 'Clásicos en Vivo - Sinfónica',
-      artista: 'Orquesta Filarmónica Nacional',
-      fecha: '10 de Agosto 2024',
-      lugar: 'Teatro Real, Madrid',
-      descripcion: 'Una experiencia sinfónica única con las obras maestras de los compositores clásicos. Dirección de maestros reconocidos mundialmente.',
-      precio: 65.99,
-      imagen: 'assets/concierto3.jpg',
-      duracion: '2 horas 45 minutos',
-      genero: 'Clásica'
-    }
-  ];
+  private readonly apiUrl = API_BASE_URL;
 
-  constructor() { }
+  constructor(private readonly http: HttpClient) { }
 
-  /**
-   * Obtiene todos los conciertos
-   * REQUISITO: Observables en servicios
-   */
-  obtenerConciertos(): Observable<Concierto[]> {
-    return of(this.conciertos);
+  obtenerConciertos(): Observable<Concert[]> {
+    return this.http.get<Concert[]>(`${this.apiUrl}/concerts`);
   }
 
-  /**
-   * Obtiene un concierto por ID
-   * REQUISITO: Observables en servicios
-   */
-  obtenerConciertoById(id: number): Observable<Concierto | undefined> {
-    return of(this.conciertos.find(c => c.id === id));
+  obtenerConciertoById(id: number): Observable<Concert> {
+    return this.http.get<Concert>(`${this.apiUrl}/concerts/${id}`);
+  }
+
+  crearConcierto(request: CreateConcertRequest): Observable<Concert> {
+    return this.http.post<Concert>(`${this.apiUrl}/concerts`, request);
+  }
+
+  obtenerAsistentesPorConcierto(concertId: number): Observable<Attendee[]> {
+    return this.http.get<Attendee[]>(`${this.apiUrl}/concerts/${concertId}/attendees`);
+  }
+
+  crearAsistente(request: CreateAttendeeRequest): Observable<Attendee> {
+    return this.http.post<Attendee>(`${this.apiUrl}/attendees`, request);
   }
 }

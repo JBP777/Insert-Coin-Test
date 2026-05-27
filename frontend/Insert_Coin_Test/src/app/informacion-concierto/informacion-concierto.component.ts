@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConciertoService, Concierto } from '../services/concierto.service';
+import { Attendee, Concert, ConciertoService } from '../services/concierto.service';
 
 @Component({
     selector: 'app-informacion-concierto',
@@ -10,9 +10,11 @@ import { ConciertoService, Concierto } from '../services/concierto.service';
 })
 export class InformacionConciertoComponent implements OnInit {
 
-  concierto: Concierto | undefined;
-  cargando = true;
-  error = false;
+  concierto = signal<Concert | null>(null);
+  asistentes = signal<Attendee[]>([]);
+  cargando = signal(true);
+  cargandoAsistentes = signal(false);
+  error = signal('');
 
   constructor(
     private readonly conciertoService: ConciertoService,
@@ -21,46 +23,63 @@ export class InformacionConciertoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Obtener ID desde los parámetros de ruta
-    // REQUISITO: Rutas básicas entre vistas
     this.activatedRoute.params.subscribe(params => {
       const id = Number(params['id']);
       if (id) {
         this.cargarDetalle(id);
+        this.cargarAsistentes(id);
       } else {
-        this.error = true;
-        this.cargando = false;
+        this.error.set('Identificador de concierto no valido.');
+        this.cargando.set(false);
       }
     });
   }
 
-  /**
-   * Carga los detalles del concierto por ID
-   * REQUISITO: Observables en servicios
-   */
   cargarDetalle(id: number): void {
+    this.cargando.set(true);
+    this.error.set('');
+
     this.conciertoService.obtenerConciertoById(id).subscribe({
       next: (concierto) => {
-        if (concierto) {
-          this.concierto = concierto;
-        } else {
-          this.error = true;
-        }
-        this.cargando = false;
+        this.concierto.set(concierto);
+        this.cargando.set(false);
       },
-      error: (err) => {
-        console.error('Error al cargar concierto:', err);
-        this.error = true;
-        this.cargando = false;
+      error: () => {
+        this.error.set('No se ha podido cargar el concierto solicitado.');
+        this.cargando.set(false);
       }
     });
   }
 
-  /**
-   * Regresa a la selección de conciertos
-   */
+  cargarAsistentes(id: number): void {
+    this.cargandoAsistentes.set(true);
+
+    this.conciertoService.obtenerAsistentesPorConcierto(id).subscribe({
+      next: (asistentes) => {
+        this.asistentes.set(asistentes);
+        this.cargandoAsistentes.set(false);
+      },
+      error: () => {
+        this.cargandoAsistentes.set(false);
+      }
+    });
+  }
+
   volverAtras(): void {
     this.router.navigate(['/conciertos']);
   }
 
+  comprarEntrada(): void {
+    const id = this.concierto()?.id;
+    if (id) {
+      this.router.navigate(['/registro'], { queryParams: { concertId: id } });
+    }
+  }
+
+  fechaCorta(fecha: string): string {
+    return new Intl.DateTimeFormat('es-ES', {
+      dateStyle: 'full',
+      timeStyle: 'short'
+    }).format(new Date(fecha));
+  }
 }
