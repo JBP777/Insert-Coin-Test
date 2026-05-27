@@ -1,5 +1,6 @@
 package com.insertcoin.concertapi.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,6 +36,7 @@ public class Concert {
 	@Column(nullable = false)
 	private Integer availableTickets;
 
+	@JsonManagedReference
 	@OneToMany(mappedBy = "concert", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Attendee> attendees = new ArrayList<>();
 

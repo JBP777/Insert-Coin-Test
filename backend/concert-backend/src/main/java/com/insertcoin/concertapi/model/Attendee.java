@@ -1,5 +1,6 @@
 package com.insertcoin.concertapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,6 +31,7 @@ public class Attendee {
 	@Column(nullable = false)
 	private Integer ticketsPurchased;
 
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "concert_id", nullable = false)
 	private Concert concert;
