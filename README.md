@@ -16,19 +16,14 @@ Desde la aplicacion se pueden consultar conciertos, crear nuevos conciertos, ver
 
 El proyecto se ha dividido por areas de trabajo:
 
- 
 
-| Area | Responsable | Funcionalidades realizadas |
 
-| --- | --- | --- |
-
-| Frontend | Daniel Montes Cardenas | Desarrollo de la interfaz web con Angular, creacion de vistas, formularios, navegacion entre paginas y conexion visual con los datos de conciertos y asistentes. |
-
-| Backend | Jesus Barru Petrule | Desarrollo de la API REST con Spring Boot, creacion de controladores, servicios, validaciones y endpoints para gestionar conciertos y asistentes. |
-
-| Base de datos | Daniel Alexander Salinas Alvear | Configuracion de H2, definicion de entidades JPA, repositorios y estructura de persistencia de conciertos y asistentes. |
-
-| Integracion proyectos | Javier Penades Sempere | Integracion entre frontend y backend, conexion con la API, ajustes de CORS, comprobacion del flujo completo y coordinacion del funcionamiento conjunto. |
+| Rol                         | Nombre                             |
+|----------------------------|------------------------------------|
+| Frontend                   | Daniel Montes Cárdenas            |
+| Backend                    | Jesús Barru Petrule               |
+| Base de datos              | Daniel Alexander Salinas Alvear    |
+| Integración de proyectos   | Javier Penades Sempere            |
 
  
 
