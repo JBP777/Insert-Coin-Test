@@ -46,7 +46,7 @@ export class RegistroConciertoComponent implements OnInit {
         this.cargando.set(false);
       },
       error: () => {
-        this.error.set('No se han podido cargar los conciertos. Comprueba que el backend este arrancado en http://localhost:8080 y que CORS permita http://localhost:4200.');
+        this.error.set('No se han podido cargar los conciertos. Revisa los campos');
         this.cargando.set(false);
       }
     });
