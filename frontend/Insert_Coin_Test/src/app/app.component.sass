@@ -1,0 +1,89 @@
+// Variables
+$color-primario: #667eea
+$color-secundario: #764ba2
+$color-fondo: #f8f9fa
+
+// Navbar
+.navbar
+  background: linear-gradient(135deg, $color-primario 0%, $color-secundario 100%)
+  padding: 0
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)
+  position: sticky
+  top: 0
+  z-index: 100
+  margin: 0          // EXIGENCIA: Aseguramos margen cero en la barra externa
+  height: 60px       // EXIGENCIA: Forzamos una altura fija y esbelta para el menú
+
+.navbar-container
+  max-width: 1200px
+  margin: 0 auto
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 0 2rem    // EXIGENCIA: Cambiado 1rem a 0 para quitar el espacio vertical interno
+  height: 100%       // Se adapta perfectamente a los 60px del padre
+
+.navbar-brand
+  display: flex      // Alineación perfecta
+  align-items: center
+  h1
+    color: white
+    margin: 0
+    font-size: 1.3rem // Ajustado ligeramente para la nueva altura
+    font-weight: 700
+
+.navbar-menu
+  display: flex
+  list-style: none
+  margin: 0
+  padding: 0
+  gap: 2rem
+  height: 100%       // Forzamos a que el menú use el alto disponible
+  align-items: center // Centramos los botones verticalmente
+
+  a
+    color: white
+    text-decoration: none
+    font-weight: 500
+    padding: 0.4rem 1rem
+    border-radius: 4px
+    transition: all 0.3s ease
+
+    &:hover
+      background: rgba(255, 255, 255, 0.2)
+      transform: translateY(-2px)
+
+    &.active
+      background: rgba(255, 255, 255, 0.3)
+      border-bottom: 2px solid white
+
+// Main Content (El objeto que se visualiza justo abajo)
+.main-content
+  min-height: calc(100vh - 60px) // Ajustado a los 60px del nuevo menú
+  background: $color-fondo
+  margin-top: 0 !important       // EXIGENCIA: Rompe cualquier empuje superior
+  padding-top: 1.5rem            // EXIGENCIA: Espacio pequeño, elegante y 100% controlado bajo el menú
+  overflow: hidden               // Evita el colapso de márgenes de los elementos hijos (como h1 del formulario)
+
+// Responsive (Ajustes para que no se rompa en móviles con la nueva altura)
+@media (max-width: 768px)
+  .navbar
+    height: auto                 // En móviles permitimos que crezca según su contenido apilado
+
+  .navbar-container
+    flex-direction: column
+    gap: 0.5rem
+    padding: 1rem
+
+  .navbar-menu
+    flex-direction: column
+    gap: 0.5rem
+    width: 100%
+
+    a
+      display: block
+      text-align: center
+      padding: 0.6rem
+
+  .main-content
+    min-height: auto

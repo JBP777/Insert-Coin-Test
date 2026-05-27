@@ -1,0 +1,119 @@
+<div class="contenedor-formulario">
+  <div class="tarjeta-registro">
+    <h1>Formulario de Registro de Comprador</h1>
+    <p class="subtitulo">Completa tus datos para reservar tu entrada</p>
+
+    <!-- Mensaje de éxito -->
+    <div *ngIf="registroExitoso()" class="alerta alerta-exito">
+      ✓ ¡Registro completado exitosamente! Tu entrada ha sido reservada.
+    </div>
+
+    <form [formGroup]="formulario" (ngSubmit)="enviarFormulario()" class="formulario">
+
+      <!-- Campo Nombre -->
+      <div class="grupo-formulario">
+        <label for="nombre">Nombre *</label>
+        <input
+          id="nombre"
+          type="text"
+          formControlName="nombre"
+          placeholder="Ej: Juan"
+          class="input-campo"
+          [ngClass]="{ 'input-error': tieneError('nombre') }"
+        />
+        <span *ngIf="tieneError('nombre')" class="mensaje-error">{{ obtenerMensajeError('nombre') }}</span>
+      </div>
+
+      <!-- Campo Apellidos -->
+      <div class="grupo-formulario">
+        <label for="apellidos">Apellidos *</label>
+        <input
+          id="apellidos"
+          type="text"
+          formControlName="apellidos"
+          placeholder="Ej: García López"
+          class="input-campo"
+          [ngClass]="{ 'input-error': tieneError('apellidos') }"
+        />
+        <span *ngIf="tieneError('apellidos')" class="mensaje-error">{{ obtenerMensajeError('apellidos') }}</span>
+      </div>
+
+      <!-- Campo Edad -->
+      <div class="grupo-formulario">
+        <label for="edad">Edad *</label>
+        <input
+          id="edad"
+          type="number"
+          formControlName="edad"
+          placeholder="Ej: 25"
+          class="input-campo"
+          [ngClass]="{ 'input-error': tieneError('edad') }"
+          min="13"
+          max="120"
+        />
+        <span *ngIf="tieneError('edad')" class="mensaje-error">{{ obtenerMensajeError('edad') }}</span>
+      </div>
+
+      <!-- Campo DNI -->
+      <div class="grupo-formulario">
+        <label for="dni">DNI *</label>
+        <input
+          id="dni"
+          type="text"
+          formControlName="dni"
+          placeholder="Ej: 12345678A"
+          class="input-campo"
+          [ngClass]="{ 'input-error': tieneError('dni') }"
+          maxlength="9"
+        />
+        <span *ngIf="tieneError('dni')" class="mensaje-error">{{ obtenerMensajeError('dni') }}</span>
+      </div>
+
+      <!-- Campo Concierto (Desplegable) -->
+      <div class="grupo-formulario">
+        <label for="concierto">Selecciona un Concierto *</label>
+        <select
+          id="concierto"
+          formControlName="concierto"
+          class="select-campo"
+          [ngClass]="{ 'input-error': tieneError('concierto') }"
+        >
+          <option value="">-- Selecciona un concierto --</option>
+          <option *ngFor="let concierto of conciertos" [value]="concierto.id">{{ concierto.nombre }}</option>
+        </select>
+        <span *ngIf="tieneError('concierto')" class="mensaje-error">{{ obtenerMensajeError('concierto') }}</span>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="grupo-botones">
+        <button
+          type="submit"
+          class="boton boton-enviar"
+          [disabled]="formulario.invalid && enviado()"
+        >
+          Enviar Registro
+        </button>
+        <button
+          type="button"
+          class="boton boton-limpiar"
+          (click)="limpiarFormulario()"
+        >
+          Limpiar Formulario
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Resumen de datos (solo si se validó correctamente) -->
+    <div *ngIf="enviado() && formulario.valid && !registroExitoso()" class="resumen-datos">
+      <h3>Resumen de tu registro:</h3>
+      <ul>
+        <li><strong>Nombre:</strong> {{ formulario.get('nombre')?.value }}</li>
+        <li><strong>Apellidos:</strong> {{ formulario.get('apellidos')?.value }}</li>
+        <li><strong>Edad:</strong> {{ formulario.get('edad')?.value }} años</li>
+        <li><strong>DNI:</strong> {{ formulario.get('dni')?.value }}</li>
+        <li><strong>Concierto:</strong> {{ formulario.get('concierto')?.value }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

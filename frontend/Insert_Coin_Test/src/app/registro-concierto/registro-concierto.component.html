@@ -1,0 +1,68 @@
+<div class="contenedor-conciertos">
+  <div class="header">
+    <h1>Elige tu Concierto</h1>
+    <p class="subtitulo">Selecciona uno de nuestros conciertos disponibles</p>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="cargando" class="cargando">
+    <div class="spinner"></div>
+    <p>Cargando conciertos...</p>
+  </div>
+
+  <!-- Grid de conciertos -->
+  <div *ngIf="!cargando" class="grid-conciertos">
+    <div
+      *ngFor="let concierto of conciertos"
+      class="caja-concierto"
+      (click)="irADetalle(concierto.id)"
+      (keydown.enter)="irADetalle(concierto.id)"
+      (keydown.space)="irADetalle(concierto.id)"
+      [attr.data-id]="concierto.id"
+      role="button"
+      tabindex="0"
+    >
+      <div class="imagen-placeholder">
+        <div class="icono-musica">🎵</div>
+      </div>
+
+      <div class="contenido">
+        <h2 class="titulo">{{ concierto.nombre }}</h2>
+
+        <div class="info-artista">
+          <span class="etiqueta">Artista:</span>
+          <p class="valor">{{ concierto.artista }}</p>
+        </div>
+
+        <div class="info-fila">
+          <div class="info-bloque">
+            <span class="etiqueta">📅 Fecha</span>
+            <p class="valor">{{ concierto.fecha }}</p>
+          </div>
+          <div class="info-bloque">
+            <span class="etiqueta">📍 Lugar</span>
+            <p class="valor">{{ concierto.lugar }}</p>
+          </div>
+        </div>
+
+        <div class="info-fila">
+          <div class="info-bloque">
+            <span class="etiqueta">⏱️ Duración</span>
+            <p class="valor">{{ concierto.duracion }}</p>
+          </div>
+          <div class="info-bloque">
+            <span class="etiqueta">🎸 Género</span>
+            <p class="valor">{{ concierto.genero }}</p>
+          </div>
+        </div>
+
+        <p class="descripcion">{{ concierto.descripcion }}</p>
+
+        <div class="pie-caja">
+          <span class="precio">{{ concierto.precio | currency:'EUR':'symbol':'1.2-2' }}</span>
+          <span class="boton-click">Ver más →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

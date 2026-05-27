@@ -1,0 +1,169 @@
+// Variables de color
+$color-primario: #667eea
+$color-secundario: #764ba2
+$color-error: #e74c3c
+$color-exito: #27ae60
+$color-fondo: #f8f9fa
+$color-borde: #ddd
+$color-texto: #333
+
+.contenedor-formulario
+  padding: 2rem 1rem
+  background: linear-gradient(135deg, $color-primario 0%, $color-secundario 100%)
+  min-height: 100vh
+  display: flex
+  justify-content: center
+  align-items: center
+
+.tarjeta-registro
+  background: white
+  border-radius: 10px
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1)
+  padding: 2.5rem
+  max-width: 500px
+  width: 100%
+
+  h1
+    color: $color-texto
+    font-size: 1.8rem
+    margin-bottom: 0.5rem
+    text-align: center
+
+  .subtitulo
+    color: #666
+    text-align: center
+    margin-bottom: 1.5rem
+    font-size: 0.95rem
+
+.alerta
+  padding: 1rem
+  border-radius: 6px
+  margin-bottom: 1.5rem
+  font-weight: 500
+
+  &.alerta-exito
+    background: #d4edda
+    color: $color-exito
+    border: 1px solid $color-exito
+
+.formulario
+  display: flex
+  flex-direction: column
+  gap: 1.5rem
+
+.grupo-formulario
+  display: flex
+  flex-direction: column
+
+  label
+    font-weight: 600
+    color: $color-texto
+    margin-bottom: 0.5rem
+    font-size: 0.95rem
+
+  .input-campo,
+  .select-campo
+    padding: 0.75rem 1rem
+    border: 2px solid $color-borde
+    border-radius: 6px
+    font-size: 1rem
+    font-family: inherit
+    transition: all 0.3s ease
+    background-color: white
+
+    &:focus
+      outline: none
+      border-color: $color-primario
+      box-shadow: 0 0 0 3px rgba($color-primario, 0.1)
+
+    &.input-error
+      border-color: $color-error
+      background-color: #ffe6e6
+
+  .mensaje-error
+    color: $color-error
+    font-size: 0.85rem
+    margin-top: 0.4rem
+    font-weight: 500
+
+.grupo-botones
+  display: flex
+  gap: 1rem
+  margin-top: 1rem
+
+  .boton
+    flex: 1
+    padding: 0.85rem 1.5rem
+    border: none
+    border-radius: 6px
+    font-size: 1rem
+    font-weight: 600
+    cursor: pointer
+    transition: all 0.3s ease
+    text-transform: uppercase
+    letter-spacing: 0.5px
+
+    &:disabled
+      opacity: 0.5
+      cursor: not-allowed
+
+  .boton-enviar
+    background: linear-gradient(135deg, $color-primario 0%, $color-secundario 100%)
+    color: white
+    box-shadow: 0 4px 15px rgba($color-primario, 0.4)
+
+    &:hover:not(:disabled)
+      transform: translateY(-2px)
+      box-shadow: 0 6px 20px rgba($color-primario, 0.6)
+
+  .boton-limpiar
+    background: #e8eef2
+    color: $color-texto
+    border: 2px solid $color-borde
+
+    &:hover:not(:disabled)
+      background: #d8dfe8
+      border-color: $color-primario
+
+.resumen-datos
+  background: $color-fondo
+  border-left: 4px solid $color-primario
+  padding: 1.5rem
+  border-radius: 6px
+  margin-top: 1.5rem
+
+  h3
+    color: $color-primario
+    margin-bottom: 1rem
+    font-size: 1.1rem
+
+  ul
+    list-style: none
+    padding: 0
+    margin: 0
+
+    li
+      color: $color-texto
+      padding: 0.6rem 0
+      border-bottom: 1px solid $color-borde
+
+      &:last-child
+        border-bottom: none
+
+      strong
+        color: $color-primario
+        font-weight: 600
+
+// Responsivo
+@media (max-width: 600px)
+  .tarjeta-registro
+    padding: 1.5rem
+
+    h1
+      font-size: 1.5rem
+
+  .grupo-botones
+    flex-direction: column
+
+    .boton
+      width: 100%
