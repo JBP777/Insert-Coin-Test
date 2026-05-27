@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -78,11 +79,31 @@ export class RegistroConciertoComponent implements OnInit {
         this.guardando.set(false);
         this.mensaje.set('Concierto creado correctamente.');
       },
-      error: () => {
+      error: (error: HttpErrorResponse) => {
         this.guardando.set(false);
-        this.error.set('No se ha podido crear el concierto. Revisa los datos y la conexion con el backend.');
+        this.error.set(this.obtenerMensajeErrorCreacion(error));
       }
     });
+  }
+
+  private obtenerMensajeErrorCreacion(error: HttpErrorResponse): string {
+    const backendMessage = error.error?.message;
+    const fieldErrors = error.error?.errors;
+
+    if (fieldErrors && typeof fieldErrors === 'object') {
+      const detalles = Object.values(fieldErrors).join(' ');
+      return `No se ha podido crear el concierto. ${detalles}`;
+    }
+
+    if (typeof backendMessage === 'string' && backendMessage.trim()) {
+      return `No se ha podido crear el concierto. ${backendMessage}`;
+    }
+
+    if (error.status === 0) {
+      return 'No se ha podido crear el concierto. Comprueba que el backend este arrancado y que CORS permita el puerto del frontend.';
+    }
+
+    return 'No se ha podido crear el concierto. Revisa los datos enviados.';
   }
 
   tieneError(campo: string): boolean {
